@@ -1,16 +1,14 @@
-package com.spring.rs.service;
+package com.spring.rs.domain;
 
 import java.util.List;
 
 import org.springframework.data.repository.CrudRepository;
 
-import com.spring.rs.domain.Player;
-
 public interface PlayerRepository extends CrudRepository<Player, Long> {
 	
 	List<Player> findAll(); 
 
-	Player findByLastNameAndFirstNameAllIgnoreCase(String lastName, String firstName);
+	Player findByFirstNameAndLastNameAllIgnoreCase(String firstName, String lastName);
 
 	List<Player> findByTeam(String team);
 

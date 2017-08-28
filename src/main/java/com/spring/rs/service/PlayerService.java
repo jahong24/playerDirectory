@@ -10,7 +10,7 @@ public interface PlayerService {
 	
 	public void addPlayer(Player player); 
 	
-	public void updatePlayer(Player player); 
+	public void updatePlayer(Player player, long id); 
 	
 	public List<Player> findByTeam(String team);
 	

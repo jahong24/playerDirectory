@@ -6,46 +6,47 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.spring.rs.domain.Player;
+import com.spring.rs.domain.PlayerRepository;
 import com.spring.rs.exception.CustomApplicationException;
 
 @Service
 public class PlayerServiceImpl implements PlayerService {
 
 	@Autowired
-	private PlayerRepository playerRepository;
+	private PlayerRepository playerDao;
 
 	public List<Player> findAll() {
-		return playerRepository.findAll();
+		return playerDao.findAll();
 	}
 
 	public void addPlayer(Player player) {
-		if (playerRepository.findByLastNameAndFirstNameAllIgnoreCase(player.getLastName(),
-				player.getFirstName()) != null) {
+		if (playerDao.findByFirstNameAndLastNameAllIgnoreCase(player.getFirstName(), player.getLastName()) != null) {
 			throw new CustomApplicationException("400", "Player already exists");
 		}
-		playerRepository.save(player);
+		playerDao.save(player);
 	}
 
-	public void updatePlayer(Player player) {
-		Player updatedPlayer = playerRepository.findByLastNameAndFirstNameAllIgnoreCase(player.getLastName(),
-				player.getFirstName());
+	public void updatePlayer(Player player, long id) {
+		Player updatedPlayer = playerDao.findOne(id);
+		updatedPlayer.setFirstName(player.getFirstName());
+		updatedPlayer.setLastName(player.getLastName());
 		updatedPlayer.setTeam(player.getTeam());
 		updatedPlayer.setJerseyNumber(player.getJerseyNumber());
 		updatedPlayer.setPosition(player.getPosition());
-		playerRepository.save(updatedPlayer);
+		playerDao.save(updatedPlayer);
 	}
 
 	public List<Player> findByTeam(String team) {
-		return playerRepository.findByTeam(team);
+		return playerDao.findByTeam(team);
 	}
 
 	public void deletePlayer(Player player) {
-		Player playerMarkedForDeletion = playerRepository.findByLastNameAndFirstNameAllIgnoreCase(player.getLastName(),
-				player.getFirstName());
+		Player playerMarkedForDeletion = playerDao.findByFirstNameAndLastNameAllIgnoreCase(player.getFirstName(),
+				player.getLastName());
 		if (playerMarkedForDeletion == null) {
 			throw new CustomApplicationException("400", "Player not available for deletion");
 		}
-		playerRepository.delete(playerMarkedForDeletion);
+		playerDao.delete(playerMarkedForDeletion);
 	}
 
 }

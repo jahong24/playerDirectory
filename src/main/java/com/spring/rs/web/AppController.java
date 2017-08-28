@@ -45,9 +45,9 @@ public class AppController {
 	 * @param player
 	 * @return
 	 */
-	@RequestMapping(method = RequestMethod.PUT, value = "/players")
-	public TransactionResponse updatePlayer(@RequestBody Player player) {
-		playerService.updatePlayer(player);
+	@RequestMapping(method = RequestMethod.PUT, value = "/players/{id}")
+	public TransactionResponse updatePlayer(@RequestBody Player player, @PathVariable long id) {
+		playerService.updatePlayer(player, id);
 		TransactionResponse transaction = new TransactionResponse();
 		transaction.setTransactionCode("200");
 		transaction

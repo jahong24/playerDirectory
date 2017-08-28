@@ -4,27 +4,29 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
+@Table(name = "player")
 public class Player {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private int playerID;
+	private long id;
 	private String firstName;
 	private String lastName;
 	private String team;
 	private String jerseyNumber;
 	private String position;
-	
-	public int getPlayerID() {
-		return playerID;
+
+	public long getId() {
+		return id;
 	}
-	
-	public void setPlayerID(int playerID) {
-		this.playerID = playerID;
+
+	public void setId(long id) {
+		this.id = id;
 	}
-	
+
 	public String getFirstName() {
 		return firstName;
 	}
