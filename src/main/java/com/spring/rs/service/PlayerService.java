@@ -14,6 +14,8 @@ public interface PlayerService {
 	
 	public List<Player> findByTeam(String team);
 	
-	public void deletePlayer(Player player); 
+	public void deletePlayer(long id); 
+	
+	public Player findPlayer(long id); 
 	
 }

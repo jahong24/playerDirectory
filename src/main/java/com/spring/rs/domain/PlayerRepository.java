@@ -11,10 +11,6 @@ public interface PlayerRepository extends CrudRepository<Player, Long> {
 	Player findByFirstNameAndLastNameAllIgnoreCase(String firstName, String lastName);
 
 	List<Player> findByTeam(String team);
-
-	List<Player> findByJerseyNumber(String jerseyNumber);
-
-	List<Player> findByPosition(String position);
 	
 }
 

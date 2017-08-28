@@ -13,40 +13,39 @@ import com.spring.rs.exception.CustomApplicationException;
 public class PlayerServiceImpl implements PlayerService {
 
 	@Autowired
-	private PlayerRepository playerDao;
+	private PlayerRepository playerRepository;
 
 	public List<Player> findAll() {
-		return playerDao.findAll();
+		return playerRepository.findAll();
 	}
 
 	public void addPlayer(Player player) {
-		if (playerDao.findByFirstNameAndLastNameAllIgnoreCase(player.getFirstName(), player.getLastName()) != null) {
+		if (playerRepository.findByFirstNameAndLastNameAllIgnoreCase(player.getFirstName(), player.getLastName()) != null) {
 			throw new CustomApplicationException("400", "Player already exists");
 		}
-		playerDao.save(player);
+		playerRepository.save(player);
 	}
 
 	public void updatePlayer(Player player, long id) {
-		Player updatedPlayer = playerDao.findOne(id);
+		Player updatedPlayer = playerRepository.findOne(id);
 		updatedPlayer.setFirstName(player.getFirstName());
 		updatedPlayer.setLastName(player.getLastName());
 		updatedPlayer.setTeam(player.getTeam());
 		updatedPlayer.setJerseyNumber(player.getJerseyNumber());
 		updatedPlayer.setPosition(player.getPosition());
-		playerDao.save(updatedPlayer);
+		playerRepository.save(updatedPlayer);
 	}
 
 	public List<Player> findByTeam(String team) {
-		return playerDao.findByTeam(team);
+		return playerRepository.findByTeam(team);
 	}
 
-	public void deletePlayer(Player player) {
-		Player playerMarkedForDeletion = playerDao.findByFirstNameAndLastNameAllIgnoreCase(player.getFirstName(),
-				player.getLastName());
-		if (playerMarkedForDeletion == null) {
-			throw new CustomApplicationException("400", "Player not available for deletion");
-		}
-		playerDao.delete(playerMarkedForDeletion);
+	public void deletePlayer(long id) {
+		playerRepository.delete(id);
+	}
+
+	public Player findPlayer(long id) {
+		return playerRepository.findOne(id);
 	}
 
 }

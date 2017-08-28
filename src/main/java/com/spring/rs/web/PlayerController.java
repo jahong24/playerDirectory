@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -17,8 +18,8 @@ import com.spring.rs.exception.TransactionResponse;
 import com.spring.rs.service.PlayerService;
 
 @RestController
-@RequestMapping(path = "/mlb")
-public class AppController {
+@RequestMapping(path = "mlb/players")
+public class PlayerController {
 
 	@Autowired
 	private PlayerService playerService;
@@ -30,7 +31,7 @@ public class AppController {
 	 * @return
 	 * @throws CustomApplicationException
 	 */
-	@RequestMapping(method = RequestMethod.POST, value = "/players")
+	@RequestMapping(method = RequestMethod.POST)
 	public TransactionResponse addPlayer(@RequestBody Player player) throws CustomApplicationException {
 		playerService.addPlayer(player);
 		TransactionResponse transaction = new TransactionResponse();
@@ -45,7 +46,7 @@ public class AppController {
 	 * @param player
 	 * @return
 	 */
-	@RequestMapping(method = RequestMethod.PUT, value = "/players/{id}")
+	@RequestMapping(method = RequestMethod.PUT, value = "/{id}")
 	public TransactionResponse updatePlayer(@RequestBody Player player, @PathVariable long id) {
 		playerService.updatePlayer(player, id);
 		TransactionResponse transaction = new TransactionResponse();
@@ -60,7 +61,7 @@ public class AppController {
 	 * 
 	 * @return
 	 */
-	@RequestMapping("/players")
+	@RequestMapping(value = "/all")
 	public @ResponseBody List<Player> getAllPlayers() {
 		return playerService.findAll();
 	}
@@ -71,9 +72,20 @@ public class AppController {
 	 * @param team
 	 * @return
 	 */
-	@RequestMapping("/players/{team}")
+	@RequestMapping(value = "/{team}")
 	public @ResponseBody List<Player> getTeamRoster(@PathVariable String team) {
 		return playerService.findByTeam(team);
+	}
+
+	/**
+	 * Retrieve a player with id
+	 * 
+	 * @param id
+	 * @return
+	 */
+	@RequestMapping
+	public @ResponseBody Player getPlayer(@RequestParam("id") long id) {
+		return playerService.findPlayer(id);
 	}
 
 	/**
@@ -82,13 +94,12 @@ public class AppController {
 	 * @param player
 	 * @return
 	 */
-	@RequestMapping(method = RequestMethod.DELETE, value = "/players")
-	public TransactionResponse deletePlayer(@RequestBody Player player) {
-		playerService.deletePlayer(player);
+	@RequestMapping(method = RequestMethod.DELETE, value = "/{id}")
+	public TransactionResponse deletePlayer(@PathVariable("id") long id) {
+		playerService.deletePlayer(id);
 		TransactionResponse transaction = new TransactionResponse();
 		transaction.setTransactionCode("200");
-		transaction
-				.setTransactionMessage(player.getFirstName() + " " + player.getLastName() + " deleted from directory");
+		transaction.setTransactionMessage("Player deleted from directory");
 		return transaction;
 	}
 
