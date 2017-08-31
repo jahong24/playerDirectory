@@ -1,4 +1,4 @@
-package com.spring.rs.exception;
+package com.roster.rs.exception;
 
 public class CustomApplicationException extends RuntimeException {
 

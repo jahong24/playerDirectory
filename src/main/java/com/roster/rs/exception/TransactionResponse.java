@@ -1,8 +1,11 @@
-package com.spring.rs.exception;
+package com.roster.rs.exception;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class TransactionResponse {
 	
-	private String transactionCode;
+	private String transactionCode; 
 	private String transactionMessage;
 	
 	public String getTransactionCode() {

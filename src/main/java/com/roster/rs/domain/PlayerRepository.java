@@ -1,4 +1,4 @@
-package com.spring.rs.domain;
+package com.roster.rs.domain;
 
 import java.util.List;
 

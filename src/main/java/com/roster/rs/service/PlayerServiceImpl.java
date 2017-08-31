@@ -1,13 +1,13 @@
-package com.spring.rs.service;
+package com.roster.rs.service;
 
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.spring.rs.domain.Player;
-import com.spring.rs.domain.PlayerRepository;
-import com.spring.rs.exception.CustomApplicationException;
+import com.roster.rs.domain.Player;
+import com.roster.rs.domain.PlayerRepository;
+import com.roster.rs.exception.CustomApplicationException;
 
 @Service
 public class PlayerServiceImpl implements PlayerService {

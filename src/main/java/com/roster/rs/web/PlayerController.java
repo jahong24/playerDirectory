@@ -1,4 +1,4 @@
-package com.spring.rs.web;
+package com.roster.rs.web;
 
 import java.util.List;
 
@@ -12,10 +12,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.spring.rs.domain.Player;
-import com.spring.rs.exception.CustomApplicationException;
-import com.spring.rs.exception.TransactionResponse;
-import com.spring.rs.service.PlayerService;
+import com.roster.rs.domain.Player;
+import com.roster.rs.exception.CustomApplicationException;
+import com.roster.rs.exception.TransactionResponse;
+import com.roster.rs.service.PlayerService;
 
 @RestController
 @RequestMapping(path = "mlb/players")
@@ -23,6 +23,9 @@ public class PlayerController {
 
 	@Autowired
 	private PlayerService playerService;
+	
+	@Autowired
+	private TransactionResponse transactionResponse;
 
 	/**
 	 * Add a player to directory
@@ -32,12 +35,9 @@ public class PlayerController {
 	 * @throws CustomApplicationException
 	 */
 	@RequestMapping(method = RequestMethod.POST)
-	public TransactionResponse addPlayer(@RequestBody Player player) throws CustomApplicationException {
+	public Player addPlayer(@RequestBody Player player) throws CustomApplicationException {
 		playerService.addPlayer(player);
-		TransactionResponse transaction = new TransactionResponse();
-		transaction.setTransactionCode("200");
-		transaction.setTransactionMessage(player.getFirstName() + " " + player.getLastName() + " added to directory");
-		return transaction;
+		return player;
 	}
 
 	/**
@@ -47,13 +47,9 @@ public class PlayerController {
 	 * @return
 	 */
 	@RequestMapping(method = RequestMethod.PUT, value = "/{id}")
-	public TransactionResponse updatePlayer(@RequestBody Player player, @PathVariable long id) {
+	public Player updatePlayer(@RequestBody Player player, @PathVariable long id) {
 		playerService.updatePlayer(player, id);
-		TransactionResponse transaction = new TransactionResponse();
-		transaction.setTransactionCode("200");
-		transaction
-				.setTransactionMessage("Updated information for " + player.getFirstName() + " " + player.getLastName());
-		return transaction;
+		return player;
 	}
 
 	/**
@@ -95,12 +91,8 @@ public class PlayerController {
 	 * @return
 	 */
 	@RequestMapping(method = RequestMethod.DELETE, value = "/{id}")
-	public TransactionResponse deletePlayer(@PathVariable("id") long id) {
+	public void deletePlayer(@PathVariable("id") long id) {
 		playerService.deletePlayer(id);
-		TransactionResponse transaction = new TransactionResponse();
-		transaction.setTransactionCode("200");
-		transaction.setTransactionMessage("Player deleted from directory");
-		return transaction;
 	}
 
 	/**
@@ -112,9 +104,8 @@ public class PlayerController {
 	 */
 	@ExceptionHandler(CustomApplicationException.class)
 	public TransactionResponse handleCustomException(CustomApplicationException ex) {
-		TransactionResponse transaction = new TransactionResponse();
-		transaction.setTransactionCode(ex.getErrorCode());
-		transaction.setTransactionMessage(ex.getErrorMessage());
-		return transaction;
+		transactionResponse.setTransactionCode(ex.getErrorCode());
+		transactionResponse.setTransactionMessage(ex.getErrorMessage());
+		return transactionResponse;
 	}
 }

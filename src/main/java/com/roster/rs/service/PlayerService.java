@@ -1,8 +1,8 @@
-package com.spring.rs.service;
+package com.roster.rs.service;
 
 import java.util.List;
 
-import com.spring.rs.domain.Player;
+import com.roster.rs.domain.Player;
 
 public interface PlayerService {
 	
